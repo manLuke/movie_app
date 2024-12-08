@@ -1,0 +1,30 @@
+name: movie_app
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.5.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  http: ^1.2.2
+  provider: ^6.1.2
+  auto_route: ^9.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+  build_runner: ^2.4.13
+  auto_route_generator: ^9.0.0
+  flutter_dotenv: ^5.2.1
+
+flutter:
+  uses-material-design: true
+
+assets:
+  - .env
