@@ -1,24 +1,63 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:movie_app/router/app_router.dart';
+import 'package:movie_app/providers/auth_provider.dart';
 import 'package:movie_app/providers/movie_provider.dart';
+import 'package:movie_app/services/api_service.dart';
+import 'package:movie_app/services/auth_service.dart';
 
-void main() {
-  runApp(MainApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+
+  final router = AppRouter();
+  final app = await MainApp.initialize(router);
+
+  runApp(app);
 }
 
 class MainApp extends StatelessWidget {
-  final appRouter = AppRouter();
+  final AppRouter _router;
+  late final ApiService _apiService;
+  late final AuthService _authService;
+  late final AuthProvider _authProvider;
+  late final MovieProvider _movieProvider;
+
+  MainApp._(this._router) {
+    _apiService = ApiService(
+      baseUrl: dotenv.env['BASE_URL']!,
+      apiKey: dotenv.env['API_KEY']!,
+      accessToken: dotenv.env['API_ACCESS_TOKEN']!,
+    );
+    _authService = AuthService(apiService: _apiService);
+    _authProvider = AuthProvider(authService: _authService, router: _router);
+    _movieProvider = MovieProvider();
+  }
+
+  static Future<MainApp> initialize(AppRouter router) async {
+    final app = MainApp._(router);
+    await app._authProvider.initializeApp();
+    return app;
+  }
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => MovieProvider()),
+        ChangeNotifierProvider.value(value: _authProvider),
+        ChangeNotifierProvider.value(value: _movieProvider),
       ],
       child: MaterialApp.router(
         title: 'Movie App',
-        routerConfig: appRouter.config(),
+        debugShowCheckedModeBanner: false,
+        routeInformationParser: _router.defaultRouteParser(),
+        routerDelegate: AutoRouterDelegate(_router),
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
       ),
     );
   }
