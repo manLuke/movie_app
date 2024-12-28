@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/providers/auth_provider.dart';
 import 'package:movie_app/widgets/main_navigation_bar.dart';
 import 'package:provider/provider.dart';
 import '../providers/favorites_provider.dart';
@@ -12,6 +13,7 @@ class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final favoritesProvider = Provider.of<FavoritesProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -24,9 +26,9 @@ class AccountScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Welcome, User!',
-              style: TextStyle(
+            Text(
+              'Welcome, ${authProvider.user?.username}!',
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,

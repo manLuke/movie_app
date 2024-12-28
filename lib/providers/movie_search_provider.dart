@@ -9,6 +9,9 @@ class MovieSearchProvider with ChangeNotifier {
   List<Movie> searchResults = [];
   String? errorMessage;
   Timer? _debounce;
+  String _searchQuery = '';
+
+  String get searchQuery => _searchQuery;
 
   MovieSearchProvider({required this.apiService});
 
@@ -16,6 +19,7 @@ class MovieSearchProvider with ChangeNotifier {
     // Debounce mechanism to avoid unnecessary API calls
     if (_debounce?.isActive ?? false) _debounce!.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () async {
+      _searchQuery = query;
       if (query.length < 3) {
         // Clear results if the query is too short
         searchResults = [];

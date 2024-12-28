@@ -14,11 +14,19 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final TextEditingController _searchController = TextEditingController();
+  late TextEditingController searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    final searchProvider =
+        Provider.of<MovieSearchProvider>(context, listen: false);
+    searchController = TextEditingController(text: searchProvider.searchQuery);
+  }
 
   @override
   void dispose() {
-    _searchController.dispose();
+    searchController.dispose();
     super.dispose();
   }
 
@@ -40,7 +48,7 @@ class _SearchScreenState extends State<SearchScreen> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
-              controller: _searchController,
+              controller: searchController,
               onChanged: searchProvider.searchMovies,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
@@ -70,7 +78,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             )
           else if (searchProvider.searchResults.isEmpty &&
-              _searchController.text.isNotEmpty)
+              searchController.text.isNotEmpty)
             const Center(
               child: Text(
                 'No results found.',
