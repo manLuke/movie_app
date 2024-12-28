@@ -34,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
             'Discover Today\'s Popular Movies',
             style: TextStyle(
               color: Colors.white,
-              fontWeight: FontWeight.bold,
             ),
           ),
           backgroundColor: Colors.blueGrey[900],
@@ -63,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (context, index) {
                       final movie = movieProvider.popularMovies[index];
                       return MovieCard(
+                        id: movie.id,
                         title: movie.title,
                         description: movie.overview,
                         imageUrl: movie.backdropPath,

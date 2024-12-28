@@ -85,6 +85,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 itemBuilder: (context, index) {
                   final movie = searchProvider.searchResults[index];
                   return MovieCard(
+                    id: movie.id,
                     title: movie.title,
                     description: movie.overview,
                     imageUrl: movie.posterPath,

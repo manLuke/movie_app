@@ -48,6 +48,56 @@ class LoginRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [MovieDetailScreen]
+class MovieDetailRoute extends PageRouteInfo<MovieDetailRouteArgs> {
+  MovieDetailRoute({
+    Key? key,
+    required int movieId,
+    List<PageRouteInfo>? children,
+  }) : super(
+          MovieDetailRoute.name,
+          args: MovieDetailRouteArgs(
+            key: key,
+            movieId: movieId,
+          ),
+          rawPathParams: {'movieId': movieId},
+          initialChildren: children,
+        );
+
+  static const String name = 'MovieDetailRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<MovieDetailRouteArgs>(
+          orElse: () =>
+              MovieDetailRouteArgs(movieId: pathParams.getInt('movieId')));
+      return MovieDetailScreen(
+        key: args.key,
+        movieId: args.movieId,
+      );
+    },
+  );
+}
+
+class MovieDetailRouteArgs {
+  const MovieDetailRouteArgs({
+    this.key,
+    required this.movieId,
+  });
+
+  final Key? key;
+
+  final int movieId;
+
+  @override
+  String toString() {
+    return 'MovieDetailRouteArgs{key: $key, movieId: $movieId}';
+  }
+}
+
+/// generated route for
 /// [SearchScreen]
 class SearchRoute extends PageRouteInfo<void> {
   const SearchRoute({List<PageRouteInfo>? children})
