@@ -44,3 +44,5 @@ app.*.map.json
 
 # custom
 .env
+*.gr.dart
+*.g.dart
