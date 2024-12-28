@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_route/auto_route.dart';
 import '../providers/movie_detail_provider.dart';
+import '../providers/favorites_provider.dart';
 
 @RoutePage()
 class MovieDetailScreen extends StatefulWidget {
@@ -77,13 +78,39 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  movieDetail.title,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        movieDetail.title,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    Consumer<FavoritesProvider>(
+                                      builder:
+                                          (context, favoritesProvider, _) =>
+                                              IconButton(
+                                        icon: Icon(
+                                          favoritesProvider
+                                                  .isFavorite(movieDetail.id)
+                                              ? Icons.favorite
+                                              : Icons.favorite_border,
+                                          color: Colors.redAccent,
+                                          size: 28,
+                                        ),
+                                        onPressed: () {
+                                          favoritesProvider
+                                              .toggleFavorite(movieDetail);
+                                        },
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 const SizedBox(height: 8),
                                 Row(

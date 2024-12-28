@@ -1,3 +1,5 @@
+import 'package:movie_app/models/movie.dart';
+
 class MovieDetail {
   final int id;
   final String title;
@@ -38,6 +40,18 @@ class MovieDetail {
       popularity: (json['popularity'] as num).toDouble(),
       runtime: json['runtime'],
       budget: json['budget'],
+    );
+  }
+
+  Movie toMovie() {
+    return Movie(
+      id: id,
+      title: title,
+      overview: overview,
+      posterPath: posterPath,
+      backdropPath: backdropPath,
+      voteAverage: voteAverage,
+      popularity: popularity,
     );
   }
 }

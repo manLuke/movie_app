@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:movie_app/providers/favorites_provider.dart';
 import 'package:movie_app/providers/movie_detail_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:movie_app/router/app_router.dart';
@@ -28,6 +29,7 @@ class MainApp extends StatelessWidget {
   late final MovieProvider _movieProvider;
   late final MovieDetailProvider _movieDetailProvider;
   late final MovieSearchProvider _movieSearchProvider;
+  late final FavoritesProvider _favoritesProvider;
 
   MainApp._(this._router) {
     _apiService = ApiService(
@@ -40,11 +42,14 @@ class MainApp extends StatelessWidget {
     _movieProvider = MovieProvider(apiService: _apiService);
     _movieDetailProvider = MovieDetailProvider(apiService: _apiService);
     _movieSearchProvider = MovieSearchProvider(apiService: _apiService);
+    _favoritesProvider =
+        FavoritesProvider(apiService: _apiService, authProvider: _authProvider);
   }
 
   static Future<MainApp> initialize(AppRouter router) async {
     final app = MainApp._(router);
     await app._authProvider.initializeApp();
+    await app._favoritesProvider.fetchFavorites();
     return app;
   }
 
@@ -56,6 +61,7 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: _movieProvider),
         ChangeNotifierProvider.value(value: _movieDetailProvider),
         ChangeNotifierProvider.value(value: _movieSearchProvider),
+        ChangeNotifierProvider.value(value: _favoritesProvider),
       ],
       child: MaterialApp.router(
         title: 'Movie App',

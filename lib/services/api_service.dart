@@ -67,8 +67,8 @@ class ApiService {
   /// Constructs the URI with required query parameters
   Uri _buildUri(String endpoint, Map<String, String>? params) {
     final queryParams = {
-      'apiKey': _apiKey,
-      if (_sessionId != null) 'sessionId': _sessionId!,
+      'api_key': _apiKey,
+      if (_sessionId != null) 'session_id': _sessionId!,
       if (params != null) ...params,
     };
 
