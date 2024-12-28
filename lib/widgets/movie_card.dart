@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MovieCard extends StatelessWidget {
   final String title;
   final String description;
-  final String imageUrl;
+  final String? imageUrl;
   final double rating;
 
   const MovieCard({
@@ -34,12 +34,27 @@ class MovieCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-            child: Image.network(
-              imageUrl,
-              height: 180,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+            child: imageUrl != null
+                ? Image.network(
+                    'https://image.tmdb.org/t/p/w500$imageUrl',
+                    height: 180,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'assets/images/image_not_found.jpg',
+                        height: 180,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  )
+                : Image.asset(
+                    'assets/images/image_not_found.jpg',
+                    height: 180,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
           ),
           Padding(
             padding: const EdgeInsets.all(12.0),

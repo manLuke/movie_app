@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:movie_app/router/app_router.dart';
 import 'package:movie_app/providers/auth_provider.dart';
 import 'package:movie_app/providers/movie_provider.dart';
+import 'package:movie_app/providers/movie_search_provider.dart';
 import 'package:movie_app/services/api_service.dart';
 import 'package:movie_app/services/auth_service.dart';
 
@@ -26,6 +27,7 @@ class MainApp extends StatelessWidget {
   late final AuthProvider _authProvider;
   late final MovieProvider _movieProvider;
   late final MovieDetailProvider _movieDetailProvider;
+  late final MovieSearchProvider _movieSearchProvider;
 
   MainApp._(this._router) {
     _apiService = ApiService(
@@ -37,6 +39,7 @@ class MainApp extends StatelessWidget {
     _authProvider = AuthProvider(authService: _authService, router: _router);
     _movieProvider = MovieProvider(apiService: _apiService);
     _movieDetailProvider = MovieDetailProvider(apiService: _apiService);
+    _movieSearchProvider = MovieSearchProvider(apiService: _apiService);
   }
 
   static Future<MainApp> initialize(AppRouter router) async {
@@ -52,6 +55,7 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: _authProvider),
         ChangeNotifierProvider.value(value: _movieProvider),
         ChangeNotifierProvider.value(value: _movieDetailProvider),
+        ChangeNotifierProvider.value(value: _movieSearchProvider),
       ],
       child: MaterialApp.router(
         title: 'Movie App',

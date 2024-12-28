@@ -17,8 +17,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    final movieProvider = Provider.of<MovieProvider>(context, listen: false);
-    movieProvider.fetchPopularMovies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final movieProvider = Provider.of<MovieProvider>(context, listen: false);
+      movieProvider.fetchPopularMovies();
+    });
   }
 
   @override
@@ -63,8 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       return MovieCard(
                         title: movie.title,
                         description: movie.overview,
-                        imageUrl:
-                            'https://image.tmdb.org/t/p/w500${movie.backdropPath}',
+                        imageUrl: movie.backdropPath,
                         rating: movie.voteAverage,
                       );
                     },

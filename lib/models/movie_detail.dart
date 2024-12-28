@@ -3,8 +3,8 @@ class MovieDetail {
   final String title;
   final String overview;
   final DateTime releaseDate;
-  final String backdropPath;
-  final String posterPath;
+  final String? backdropPath;
+  final String? posterPath;
   final List<String> genres;
   final double voteAverage;
   final double popularity;
@@ -32,7 +32,7 @@ class MovieDetail {
       overview: json['overview'],
       releaseDate: DateTime.parse(json['release_date']),
       posterPath: json['poster_path'],
-      backdropPath: json['backdrop_path'],
+      backdropPath: json['backdrop_path'] ?? json['poster_path'],
       genres: (json['genres'] as List).map((g) => g['name'] as String).toList(),
       voteAverage: (json['vote_average'] as num).toDouble(),
       popularity: (json['popularity'] as num).toDouble(),
