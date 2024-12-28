@@ -44,6 +44,8 @@ class MainApp extends StatelessWidget {
     _movieSearchProvider = MovieSearchProvider(apiService: _apiService);
     _favoritesProvider =
         FavoritesProvider(apiService: _apiService, authProvider: _authProvider);
+
+    _authProvider.setFavoritesProvider(_favoritesProvider);
   }
 
   static Future<MainApp> initialize(AppRouter router) async {

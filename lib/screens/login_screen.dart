@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:provider/provider.dart';
-import '../providers/auth_provider.dart'; // Add this import
+import '../providers/auth_provider.dart';
 
 @RoutePage()
 class LoginScreen extends StatefulWidget {
@@ -92,62 +92,26 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (auth.isLoading)
                       const CircularProgressIndicator()
                     else if (auth.loginState == LoginState.initial)
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          gradient: const LinearGradient(
-                            colors: [Color(0xFF8E2DE2), Color(0xFF4A00E0)],
-                          ),
-                        ),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await auth.requestSignIn();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 40, vertical: 15),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          child: const Text(
-                            'Přihlásit se',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
+                      _buildCustomButton(
+                        text: 'Přihlásit se',
+                        gradientColors: [
+                          const Color(0xFF0062E6),
+                          const Color(0xFF33AEFF),
+                        ],
+                        onPressed: () async {
+                          await auth.requestSignIn();
+                        },
                       )
                     else if (auth.loginState == LoginState.awaitingConfirmation)
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          gradient: const LinearGradient(
-                            colors: [Color(0xFF4CAF50), Color(0xFF2E7D32)],
-                          ),
-                        ),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await auth.confirmLogin();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 40, vertical: 15),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          child: const Text(
-                            'Potvrdit přihlášení',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
+                      _buildCustomButton(
+                        text: 'Potvrdit přihlášení',
+                        gradientColors: [
+                          const Color(0xFF43A047),
+                          const Color(0xFF66BB6A),
+                        ],
+                        onPressed: () async {
+                          await auth.confirmLogin();
+                        },
                       ),
                     if (auth.error != null)
                       Padding(
@@ -166,6 +130,48 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildCustomButton({
+    required String text,
+    required List<Color> gradientColors,
+    required VoidCallback onPressed,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(top: 16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(colors: gradientColors),
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: gradientColors.last.withOpacity(0.5),
+            blurRadius: 10,
+            spreadRadius: 1,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }

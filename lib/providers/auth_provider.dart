@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
+import 'package:movie_app/providers/favorites_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/auth_service.dart';
 import '../models/account_details.dart';
@@ -9,6 +10,7 @@ enum LoginState { initial, requestedLogin, awaitingConfirmation }
 class AuthProvider with ChangeNotifier {
   final StackRouter _router;
   final AuthService _authService;
+  FavoritesProvider? _favoritesProvider;
   bool _isLoading = false;
   String? _error;
   AccountDetails? _user;
@@ -40,7 +42,7 @@ class AuthProvider with ChangeNotifier {
           _router.replaceNamed('/home');
           notifyListeners();
         } catch (e) {
-          _authService.clearSession();
+          await _authService.clearSession();
         }
       }
     } finally {
@@ -98,12 +100,17 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  void setFavoritesProvider(FavoritesProvider provider) {
+    _favoritesProvider = provider;
+  }
+
   Future<bool> submitSignIn(String requestToken) async {
     try {
       _setLoading(true);
       _setError(null);
 
       await _authService.createSession(requestToken);
+      await _favoritesProvider?.fetchFavorites();
       _user = await _authService.fetchAccountDetails();
       _router.replaceNamed('/home');
 
@@ -114,6 +121,22 @@ class AuthProvider with ChangeNotifier {
       return false;
     } finally {
       _setLoading(false);
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      final sessionId = await _authService.getStoredSession();
+      if (sessionId != null) {
+        await _authService.deleteSession(sessionId);
+      }
+    } catch (e) {
+      _setError('Failed to logout: $e');
+    } finally {
+      _user = null;
+      _router.replaceNamed('/login');
+      _authService.clearSession();
+      notifyListeners();
     }
   }
 }

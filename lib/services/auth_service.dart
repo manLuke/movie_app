@@ -53,14 +53,21 @@ class AuthService {
     await prefs.remove('session_id');
   }
 
-  void clearSession() {
+  Future<void> clearSession() async {
     _apiService.clearSessionId();
-    _clearStoredSession();
+    await _clearStoredSession();
   }
 
   /// Retrieves the stored session ID from local storage
   Future<String?> getStoredSession() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('session_id');
+  }
+
+  Future<void> deleteSession(String sessionId) async {
+    await _apiService.delete(
+      '/authentication/session',
+      params: {'session_id': sessionId},
+    );
   }
 }
