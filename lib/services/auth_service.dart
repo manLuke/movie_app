@@ -67,7 +67,6 @@ class AuthService {
   Future<void> deleteSession(String sessionId) async {
     await _apiService.delete(
       '/authentication/session',
-      params: {'session_id': sessionId},
     );
   }
 }

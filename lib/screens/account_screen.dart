@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/providers/auth_provider.dart';
-import 'package:movie_app/widgets/main_navigation_bar.dart';
 import 'package:provider/provider.dart';
 import '../providers/favorites_provider.dart';
 import '../widgets/compact_movie_card.dart';
@@ -133,7 +132,6 @@ class AccountScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const MainNavigationBar(currentIndex: 2),
     );
   }
 }

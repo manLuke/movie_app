@@ -35,13 +35,13 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: const Text(
-          'Movie Details',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.blueGrey[900],
-      ),
+      // appBar: AppBar(
+      //   title: const Text(
+      //     'Movie Details',
+      //     style: TextStyle(color: Colors.white),
+      //   ),
+      //   backgroundColor: Colors.blueGrey[900],
+      // ),
       body: detailProvider.isLoading
           ? const Center(
               child: CircularProgressIndicator(
@@ -71,7 +71,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                               'https://image.tmdb.org/t/p/w500${movieDetail.backdropPath}',
                               fit: BoxFit.cover,
                               width: double.infinity,
-                              height: 200,
+                              height: 300,
                             ),
                           Padding(
                             padding: const EdgeInsets.all(16.0),
@@ -139,7 +139,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                 const SizedBox(height: 16),
                                 const Text(
                                   'Overview',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,

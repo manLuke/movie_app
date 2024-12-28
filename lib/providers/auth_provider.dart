@@ -39,7 +39,7 @@ class AuthProvider with ChangeNotifier {
         try {
           _user = await _authService.fetchAccountDetails();
           _initialized = true;
-          _router.replaceNamed('/home');
+          _router.replaceNamed('/main/home');
           notifyListeners();
         } catch (e) {
           await _authService.clearSession();
@@ -112,7 +112,7 @@ class AuthProvider with ChangeNotifier {
       await _authService.createSession(requestToken);
       await _favoritesProvider?.fetchFavorites();
       _user = await _authService.fetchAccountDetails();
-      _router.replaceNamed('/home');
+      _router.replaceNamed('/main/home');
 
       notifyListeners();
       return true;

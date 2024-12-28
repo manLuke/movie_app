@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_app/widgets/main_navigation_bar.dart';
 import 'package:provider/provider.dart';
 import '../providers/movie_search_provider.dart';
 import '../widgets/movie_card.dart';
@@ -104,7 +103,6 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
         ],
       ),
-      bottomNavigationBar: const MainNavigationBar(currentIndex: 1),
     );
   }
 }
